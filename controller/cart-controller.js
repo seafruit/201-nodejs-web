@@ -9,7 +9,7 @@ const mapItemToUri = (items)=> {
   })
 };
 
-export default class CartController {
+class CartController {
   getAll(req, res, next) {
     async.series({
       items: (done)=> {
@@ -21,7 +21,7 @@ export default class CartController {
           const carts = docs.map((doc)=> {
             const cart = doc.toJSON();
             cart.items = mapItemToUri(cart.items);
-            return carts;
+            return cart;
           });
           done(null, carts);
         })
@@ -34,7 +34,7 @@ export default class CartController {
         return next(err);
       }
       return res.status(constant.httpCode.OK).send(result);
-    })
+    });
   }
 
   getOne(req, res, next) {
@@ -62,8 +62,8 @@ export default class CartController {
       if (!doc) {
         return res.sendStatus(constant.httpCode.NOT_FOUND);
       }
-      return res.status(constant.httpCode.NO_CONTENT);
-    })
+      return res.sendStatus(constant.httpCode.NO_CONTENT);
+    });
   }
 
   create(req, res, next) {
@@ -72,7 +72,7 @@ export default class CartController {
         return next(err);
       }
       return res.status(constant.httpCode.CREATED).send({uri: `carts/${doc._id}`});
-    })
+    });
   }
 
   update(req, res, next) {
@@ -84,8 +84,8 @@ export default class CartController {
       if (!doc) {
         return res.sendStatus(constant.httpCode.NOT_FOUND);
       }
-      return res.status(constant.httpCode.NO_CONTENT);
-    })
+      return res.sendStatus(constant.httpCode.NO_CONTENT);
+    });
   }
 }
 

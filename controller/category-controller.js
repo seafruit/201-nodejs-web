@@ -17,11 +17,8 @@ class CategoryController{
       if(err){
         return next(err);
       }
-      if(!result){
-        return res.sendSatus(constant.httpCode.NOT_FOUND);
-      }
       return res.status(constant.httpCode.OK).send(result);
-    })
+    });
   }
 
   getOne(req,res,next){
@@ -34,36 +31,16 @@ class CategoryController{
         return res.sendStatus(constant.httpCode.NOT_FOUND);
       }
       return res.status(constant.httpCode.OK).send(doc);
-    })
+    });
   }
 
-  create(req,res,next){
-    Category.create(req.body,(err,doc)=>{
-      if(err){
-        return next(err);
-      }
-      return res.status(constant.httpCode.CREATED).send({uri:`categories/${doc._id}`});
-    })
-  }
-
-  update(req,res,next){
-    const categoryId = req.params.categoryId;
-    Category.findByIdAndUpdate(categoryId,req.body,(err,doc)=>{
-      if(err){
-        return next(err);
-      }
-      if(!doc){
-        return res.sendStatus(constant.httpCode.NOT_FOUND);
-      }
-      return res.status(constant.httpCode.NO_CONTENT);
-    })
-  }
+ 
   delete(req,res,next){
     const categoryId = req.params.categoryId;
 
     async.waterfall([
       (done)=>{
-        Item.findOne({},done);
+        Item.findOne({categoryId},done);
       },(docs,done)=>{
         if(docs){
           return done(true,null);
@@ -76,7 +53,7 @@ class CategoryController{
             })
         }
       }
-    ],(err,result)=>{
+    ],(err)=>{
       if(err === true){
         return res.sendStatus(constant.httpCode.BAD_REQUEST);
       }
@@ -90,6 +67,27 @@ class CategoryController{
     })
   }
 
+ create(req,res,next){
+    Category.create(req.body,(err,doc)=>{
+      if(err){
+        return next(err);
+      }
+      return res.status(constant.httpCode.CREATED).send({uri:`categories/${doc._id}`});
+    });
+  }
+
+  update(req,res,next){
+    const categoryId = req.params.categoryId;
+    Category.findByIdAndUpdate(categoryId,req.body,(err,doc)=>{
+      if(err){
+        return next(err);
+      }
+      if(!doc){
+        return res.sendStatus(constant.httpCode.NOT_FOUND);
+      }
+      return res.sendStatus(constant.httpCode.NO_CONTENT);
+    });
+  }
 }
 
 module.exports = CategoryController;

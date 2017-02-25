@@ -1,11 +1,11 @@
-const cosntant = {
+const constant = {
   httpCode:{
     OK:200,
     CREATED:201,
     NO_CONTENT:204,
-    NOT_FOUND:400,
-    BAD_REQUEST:401
+    NOT_FOUND:404,
+    BAD_REQUEST:400
   }
 };
 
-module.exports = cosntant;
+module.exports = constant;

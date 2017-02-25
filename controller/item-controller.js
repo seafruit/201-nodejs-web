@@ -3,7 +3,7 @@ const async = require('async');
 const constant = require('../config/constant');
 const Item = require('../model/item');
 
-export default class ItemController {
+class ItemController {
   getAll(req, res, next) {
     async.series({
       items: (done)=> {
@@ -18,11 +18,8 @@ export default class ItemController {
       if (err) {
         return next(err);
       }
-      if (!result) {
-        return res.sendStatus(constant.httpCode.NOT_FOUND);
-      }
       return res.status(constant.httpCode.OK).send(result);
-    })
+    });
   }
 
   getOne(req, res, next) {
@@ -37,7 +34,7 @@ export default class ItemController {
           return res.sendStatus(constant.httpCode.NOT_FOUND);
         }
         return res.status(constant.httpCode.OK).send(doc);
-      })
+      });
   }
 
   delete(req, res, next) {
@@ -49,8 +46,8 @@ export default class ItemController {
       if (!doc) {
         return res.sendStatus(constant.httpCode.NOT_FOUND);
       }
-      return res.status(constant.httpCode.NO_CONTENT);
-    })
+      return res.sendStatus(constant.httpCode.NO_CONTENT);
+    });
   }
 
   create(req, res, next) {
@@ -71,7 +68,7 @@ export default class ItemController {
       if (!doc) {
         return res.sendStatus(constant.httpCode.NOT_FOUND);
       }
-      return res.status(constant.httpCode.NO_CONTENT);
+      return res.sendStatus(constant.httpCode.NO_CONTENT);
     })
   }
 }

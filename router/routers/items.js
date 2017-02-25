@@ -11,4 +11,4 @@ router.delete('/:itemId',itemCtrl.delete);
 router.post('/',itemCtrl.create);
 router.put('/:itemId',itemCtrl.update);
 
-mudule.exports = router;
+module.exports = router;
